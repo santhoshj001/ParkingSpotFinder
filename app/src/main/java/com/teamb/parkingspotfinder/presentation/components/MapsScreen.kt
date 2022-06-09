@@ -5,11 +5,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberMarkerState
 
 
 @Composable
@@ -32,8 +34,11 @@ fun MapScreen(
         ) {
             viewModel.mapState.parkingSpots.forEach { spot ->
                 Marker(
-                    state = MarkerState(position = LatLng(spot.longitude, spot.longitude)),
-                    alpha = 0.5f,
+                    state = MarkerState(position = LatLng(
+                        spot.latitude,
+                        spot.longitude)
+                    ),
+                    alpha = 1f,
                     draggable = false,
                     flat = false,
                     snippet = " long Press to Delete  ",
@@ -44,11 +49,12 @@ fun MapScreen(
                         marker.showInfoWindow()
                         true
                     },
-                    onInfoWindowLongClick = {
+                    onInfoWindowLongClick = { marker ->
+                        marker.hideInfoWindow()
                         viewModel.onEvent(MapEvent.DeleteMarker(spot))
                     },
                     icon = BitmapDescriptorFactory.defaultMarker(
-                        BitmapDescriptorFactory.HUE_BLUE
+                        BitmapDescriptorFactory.HUE_AZURE
                     )
 
                 )

@@ -9,6 +9,5 @@ class DeleteParkingSpotUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(parkingSpotUiModel: ParkingSpotUiModel) {
         parkingSpotRepository.deleteParkingSpot(parkingSpot = parkingSpotUiModel)
-
     }
 }
